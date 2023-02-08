@@ -40,6 +40,22 @@
 
     ];
 
+    if(isset($_POST['parking']) && !empty($_POST['parking'])) {
+        $temp = [];
+
+        foreach($hotels as $hotel) {
+            $park = $hotel['parking'] ? 'si' : 'no';
+            if($park == $_POST['parking']) {
+                $temp[] = $hotel; 
+            }
+        }
+        $hotels = $temp;
+    }
+    if(isset($_POST['vote']) && !empty($_POST['vote'])) {
+        $vote = $_POST['vote'];
+        $hotels = array_filter($hotels, fn($value) => $value['vote'] >= $vote);
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -66,6 +82,35 @@
 
 <body>
     <div class="container">
+        <h1 class="text-center mt-5 display-1 fw-bold">Hotel</h1>
+        <h5 class="text-center mt-3 mb-5">Find your hotel</h5>
+        <div class="my-5 d-flex justify-content-center">
+            <form action="index.php" method="POST">
+                <div class="d-flex">
+                    <div class="me-5">
+                        <label for="parking">Do you want parking?</label>
+                        <select name="parking" class="form-select" id="parking">
+                            <option value="">Select</option>
+                            <option value="si">whith parking</option>
+                            <option value="no">No parking</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="vote">Seleziona un voto da 1 a 5</label>
+                        <select name="vote" class="form-select" id="vote">
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-4 w-100">Invia</button>
+            </form>
+        </div>
+
         <div class='d-flex flex-wrap justify-content-center'>
             <h3 class="mt-4">Hotels available</h3>
             <table class='table text-capitalize'>
